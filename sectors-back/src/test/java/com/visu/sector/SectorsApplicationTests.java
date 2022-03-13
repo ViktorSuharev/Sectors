@@ -1,4 +1,4 @@
-package com.visu.sectors;
+package com.visu.sector;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

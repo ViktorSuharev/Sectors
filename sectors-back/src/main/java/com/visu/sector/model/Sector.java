@@ -1,4 +1,4 @@
-package com.visu.sectors.model;
+package com.visu.sector.model;
 
 import lombok.Data;
 

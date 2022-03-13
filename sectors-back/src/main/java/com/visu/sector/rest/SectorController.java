@@ -1,7 +1,7 @@
-package com.visu.sectors.rest;
+package com.visu.sector.rest;
 
-import com.visu.sectors.model.Sector;
-import com.visu.sectors.service.SectorService;
+import com.visu.sector.model.Sector;
+import com.visu.sector.service.SectorService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

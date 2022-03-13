@@ -1,4 +1,4 @@
-package com.visu.sectors;
+package com.visu;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

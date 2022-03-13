@@ -1,6 +1,6 @@
-package com.visu.sectors.service;
+package com.visu.sector.service;
 
-import com.visu.sectors.model.Sector;
+import com.visu.sector.model.Sector;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
