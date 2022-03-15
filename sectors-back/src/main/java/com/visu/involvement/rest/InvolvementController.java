@@ -44,6 +44,7 @@ public class InvolvementController {
         return stored;
     }
 
+    //TODO Session stickiness is not working. Session is recreated on each call
     private Long getInvolvementId(HttpSession session) {
         Object associatedInvolvementObj = session.getAttribute(ASSOCIATED_INVOLVEMENT);
         return associatedInvolvementObj instanceof Long ?

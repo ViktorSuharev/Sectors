@@ -8,5 +8,6 @@ import java.util.Set;
 
 @Repository
 public interface SectorRepository extends JpaRepository<Sector, Long> {
+    //TODO fix N + 1 problem
     Set<Sector> findByParentIdIsNull();
 }
