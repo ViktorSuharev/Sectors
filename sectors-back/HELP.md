@@ -2,7 +2,7 @@
 
 Implementation of the screening task
 
-#### Gloassary
+### Gloassary
 **Sector** - a result of the filling form.
 
 **Involvement** - a result of the filling form. Name - sectors - agree_with_terms bundle.
