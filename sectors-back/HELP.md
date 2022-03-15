@@ -22,3 +22,4 @@ Please check file
 Issues can be found by TODO keyword
 - Each client request creates new session
 - N + 1 problem while getting sectors tree
+- Tests are not implemented
