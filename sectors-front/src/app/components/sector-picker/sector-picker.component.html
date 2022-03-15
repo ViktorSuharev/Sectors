@@ -1,0 +1,25 @@
+<form [formGroup]="sectorPickerForm">
+  <mat-card>
+    <mat-card-subtitle>Please enter your name and pick the Sectors you are currently involved in.</mat-card-subtitle>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Type your name" formControlName="userName">
+    </mat-form-field>
+    <div class="sector-selector">
+      <mat-label>Choose sector</mat-label>
+      <app-sector-toolbox [readonlyMode]="true" (selected)="onSelect($event)"></app-sector-toolbox>
+      <mat-error *ngIf="selectedSectors.length === 0 && isSubmitted">
+        required
+      </mat-error>
+    </div>
+    <ng-container>
+      <mat-checkbox formControlName="agreeToTerms">Agree to terms</mat-checkbox>
+      <mat-error *ngIf="sectorPickerForm.get('agreeToTerms')?.invalid && sectorPickerForm.get('agreeToTerms')?.dirty">
+        required
+      </mat-error>
+    </ng-container>
+    <mat-card-actions>
+      <button mat-button color="primary" (click)="saveForm()">Save</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

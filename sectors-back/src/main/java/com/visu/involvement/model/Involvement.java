@@ -1,4 +1,4 @@
-package com.visu.order.model;
+package com.visu.involvement.model;
 
 import com.visu.sector.model.Sector;
 import lombok.Data;
@@ -6,19 +6,19 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity(name = "orders")
+@Entity(name = "involvements")
 @Data
-public class Order {
+public class Involvement {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long orderId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private String userName;
-    private boolean isAgreeToTerms;
+    private boolean agreeToTerms;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "ordered_sectors",
-            joinColumns = @JoinColumn(name = "order_id"),
+            name = "involved_sectors",
+            joinColumns = @JoinColumn(name = "involvement_id"),
             inverseJoinColumns = @JoinColumn(name = "sector_id"))
     private Set<Sector> sectors;
 }
