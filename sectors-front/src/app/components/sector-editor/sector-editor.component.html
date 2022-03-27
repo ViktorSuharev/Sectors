@@ -1,8 +1,8 @@
 <mat-card>
   <mat-card-subtitle>Select sectors you want to update, delete or append child.</mat-card-subtitle>
-  <app-sector-toolbox
+  <app-sector-tree
     [readonlyMode]="false"
-    [sectors]="toolboxSectors"
+    [nodes]="nodes"
     (updated)="onUpdated($event)"
-  ></app-sector-toolbox>
+  ></app-sector-tree>
 </mat-card>

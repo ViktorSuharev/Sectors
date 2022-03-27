@@ -17,10 +17,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
-import { AddSectorDialogComponent } from './components/sector-toolbox-group/add-sector-dialog/add-sector-dialog.component';
-import { EditSectorDialogComponent } from './components/sector-toolbox-group/edit-sector-dialog/edit-sector-dialog.component';
-import { RemoveSectorDialogComponent } from './components/sector-toolbox-group/remove-sector-dialog/remove-sector-dialog.component';
-import { SectorToolboxComponent } from './components/sector-toolbox-group/sector-toolbox/sector-toolbox.component';
+import { AddSectorDialogComponent } from './components/sector-tree-group/add-sector-dialog/add-sector-dialog.component';
+import { EditSectorDialogComponent } from './components/sector-tree-group/edit-sector-dialog/edit-sector-dialog.component';
+import { RemoveSectorDialogComponent } from './components/sector-tree-group/remove-sector-dialog/remove-sector-dialog.component';
+import { SectorTreeComponent } from './components/sector-tree-group/sector-tree/sector-tree.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NotificationMessageComponent } from './components/push-notification-group/notification-message/notification-message.component';
 
@@ -32,7 +32,7 @@ import { NotificationMessageComponent } from './components/push-notification-gro
     AddSectorDialogComponent,
     EditSectorDialogComponent,
     RemoveSectorDialogComponent,
-    SectorToolboxComponent,
+    SectorTreeComponent,
     NotificationMessageComponent
   ],
   imports: [

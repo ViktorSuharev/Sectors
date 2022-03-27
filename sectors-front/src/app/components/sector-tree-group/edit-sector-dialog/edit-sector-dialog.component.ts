@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ToolboxSector } from '../sector-toolbox/sector-toolbox.component';
+import { SectorNode } from '../sector-tree/sector-tree.component';
 
 @Component({
   selector: 'app-edit-sector-dialog',
@@ -8,9 +8,5 @@ import { ToolboxSector } from '../sector-toolbox/sector-toolbox.component';
 })
 export class EditSectorDialogComponent {
   constructor(private dialogRef: MatDialogRef<EditSectorDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) readonly data: ToolboxSector) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
+              @Inject(MAT_DIALOG_DATA) readonly data: SectorNode) { }
 }
