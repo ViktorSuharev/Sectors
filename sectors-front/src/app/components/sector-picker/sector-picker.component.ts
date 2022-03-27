@@ -4,6 +4,11 @@ import { Sector } from '../../model/sector.model';
 import { SectorsHttpService } from '../../services/sectors.http.service';
 import { Involvement } from '../../model/involvement.model';
 import { PushNotificationService } from '../push-notification-group/services/push-notification.service';
+import {
+  ToolboxSector,
+  toSector,
+  toToolboxSector
+} from '../sector-toolbox-group/sector-toolbox/sector-toolbox.component';
 
 @Component({
   selector: 'app-sector-picker',
@@ -11,7 +16,7 @@ import { PushNotificationService } from '../push-notification-group/services/pus
   styleUrls: ['./sector-picker.component.less']
 })
 export class SectorPickerComponent implements OnInit {
-  sectors: Sector[] = [];
+  toolboxSectors: ToolboxSector[] = [];
   selectedSectors: Sector[] = [];
   isSubmitted = false;
 
@@ -27,7 +32,7 @@ export class SectorPickerComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.getSectors()
-      .subscribe(sectors => this.sectors = sectors);
+      .subscribe(sectors => this.toolboxSectors = sectors.map(s => toToolboxSector(s)));
     this.service.getSessionInvolvement()
       .subscribe(involvement => this.updateInvolvement(involvement));
   }
@@ -50,9 +55,9 @@ export class SectorPickerComponent implements OnInit {
     }
   }
 
-  onSelect(sectors: Sector[]): void {
-    if (sectors) {
-      this.selectedSectors = sectors;
+  onSelect(toolboxSectors: ToolboxSector[]): void {
+    if (toolboxSectors) {
+      this.selectedSectors = toolboxSectors.map(s => toSector(s));
     }
   }
 

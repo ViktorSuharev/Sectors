@@ -7,7 +7,11 @@
     </mat-form-field>
     <div class="sector-selector">
       <mat-label>Choose sector</mat-label>
-      <app-sector-toolbox [readonlyMode]="true" (selected)="onSelect($event)"></app-sector-toolbox>
+      <app-sector-toolbox
+        [readonlyMode]="true"
+        [sectors]="toolboxSectors"
+        (selected)="onSelect($event)"
+      ></app-sector-toolbox>
       <mat-error *ngIf="selectedSectors.length === 0 && isSubmitted">
         required
       </mat-error>
