@@ -1,4 +1,4 @@
-import {Sector} from "./sector.model";
+import { Sector } from './sector.model';
 
 export interface Involvement {
   id?: number;

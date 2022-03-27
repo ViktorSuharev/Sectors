@@ -4,12 +4,11 @@ import { DialogData } from '../sector-toolbox/sector-toolbox.component';
 
 @Component({
   selector: 'app-edit-sector-dialog',
-  templateUrl: './edit-sector-dialog.component.html',
-  styleUrls: ['./edit-sector-dialog.component.less']
+  templateUrl: './edit-sector-dialog.component.html'
 })
 export class EditSectorDialogComponent {
   constructor(public dialogRef: MatDialogRef<EditSectorDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+              @Inject(MAT_DIALOG_DATA) readonly data: DialogData) { }
 
   onNoClick(): void {
     this.dialogRef.close();

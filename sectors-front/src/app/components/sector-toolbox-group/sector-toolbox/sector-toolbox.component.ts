@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { Sector } from '../../model/sector.model';
+import { Sector } from '../../../model/sector.model';
 import { FormControl } from '@angular/forms';
-import { SectorsService } from '../../services/sectors.service';
-import { MatDialog } from '@angular/material/dialog';
+import { SectorsHttpService } from '../../../services/sectors.http.service';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { EditSectorDialogComponent } from '../edit-sector-dialog/edit-sector-dialog.component';
 import { AddSectorDialogComponent } from '../add-sector-dialog/add-sector-dialog.component';
 import { RemoveSectorDialogComponent } from '../remove-sector-dialog/remove-sector-dialog.component';
+import { PushNotificationService } from '../../push-notification-group/services/push-notification.service';
 
 interface SectorChecked extends Sector {
   checked: boolean,
@@ -32,9 +33,12 @@ export class SectorToolboxComponent implements OnInit {
   sectorNameFormControl: FormControl = new FormControl();
 
   @Input() readonlyMode: boolean = false;
-  @Output() selected: EventEmitter<Sector[]> = new EventEmitter<Sector[]>();
+  @Output() readonly selected: EventEmitter<Sector[]> = new EventEmitter<Sector[]>();
 
-  constructor(private service: SectorsService, public dialog: MatDialog) {
+  constructor(
+    private readonly service: SectorsHttpService,
+    private readonly notificationService: PushNotificationService,
+    private readonly dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -42,7 +46,6 @@ export class SectorToolboxComponent implements OnInit {
   }
 
   select(sector: SectorChecked): void {
-    console.log('sector id', sector.id);
     sector.checked = !sector.checked;
     if (sector.checked) {
       this.selectedSectors.push(sector);
@@ -56,12 +59,8 @@ export class SectorToolboxComponent implements OnInit {
   }
 
   edit(sectorChecked: SectorChecked): void {
-    const dialogRef = this.dialog.open(EditSectorDialogComponent, {
-      width: '250px',
-      data: {
-        name: sectorChecked.name
-      }
-    });
+    const dialogRef: MatDialogRef<EditSectorDialogComponent> =
+      this.dialog.open(EditSectorDialogComponent, SectorToolboxComponent.toDialogConfig(sectorChecked.name));
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -72,7 +71,8 @@ export class SectorToolboxComponent implements OnInit {
           children: sectorChecked.children
         };
         this.service.edit(sector).subscribe(s => {
-          console.log('Sector was edited ', s);
+          console.debug('Sector %o was renamed to %s', sectorChecked, s.name);
+          this.notificationService.show('Sector was renamed');
           this.reloadTree();
         });
       }
@@ -80,12 +80,8 @@ export class SectorToolboxComponent implements OnInit {
   }
 
   add(sectorChecked: SectorChecked): void {
-    const dialogRef = this.dialog.open(AddSectorDialogComponent, {
-      width: '250px',
-      data: {
-        name: ''
-      }
-    });
+    const dialogRef: MatDialogRef<AddSectorDialogComponent> =
+      this.dialog.open(AddSectorDialogComponent, SectorToolboxComponent.toDialogConfig(''));
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -95,7 +91,8 @@ export class SectorToolboxComponent implements OnInit {
           children: []
         };
         this.service.add(sector).subscribe(s => {
-          console.log('Sector was added ', s);
+          console.debug('Sector was added: %o', s);
+          this.notificationService.show('Sector was added');
           this.reloadTree();
         });
       }
@@ -103,17 +100,14 @@ export class SectorToolboxComponent implements OnInit {
   }
 
   remove(sectorChecked: SectorChecked): void {
-    const dialogRef = this.dialog.open(RemoveSectorDialogComponent, {
-      width: '250px',
-      data: {
-        name: sectorChecked.name
-      }
-    });
+    const dialogRef: MatDialogRef<RemoveSectorDialogComponent> =
+      this.dialog.open(RemoveSectorDialogComponent, SectorToolboxComponent.toDialogConfig(sectorChecked.name));
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.service.remove(sectorChecked.id).subscribe(s => {
-          console.log('Sector was removed ', s);
+        this.service.remove(sectorChecked.id).subscribe(() => {
+          console.debug('Sector was removed: %o', sectorChecked);
+          this.notificationService.show('Sector was removed');
           this.reloadTree();
         });
       }
@@ -152,5 +146,13 @@ export class SectorToolboxComponent implements OnInit {
       children: s.children.map(c => SectorToolboxComponent.createSector(c)),
       parentId: s.parentId
     };
+  }
+
+  private static toDialogConfig(name: string): MatDialogConfig {
+    return {
+      data: {
+        name
+      }
+    }
   }
 }

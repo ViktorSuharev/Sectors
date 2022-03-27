@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Sector } from '../../model/sector.model';
-import { SectorsService } from '../../services/sectors.service';
+import { SectorsHttpService } from '../../services/sectors.http.service';
 import { Involvement } from '../../model/involvement.model';
+import { PushNotificationService } from '../push-notification-group/services/push-notification.service';
 
 @Component({
   selector: 'app-sector-picker',
@@ -19,7 +20,10 @@ export class SectorPickerComponent implements OnInit {
     agreeToTerms: [false, Validators.requiredTrue],
   });
 
-  constructor(private formBuilder: FormBuilder, private service: SectorsService) { }
+  constructor(
+    private readonly formBuilder: FormBuilder,
+    private readonly service: SectorsHttpService,
+    private readonly notificationService: PushNotificationService) { }
 
   ngOnInit(): void {
     this.service.getSectors()
@@ -39,7 +43,10 @@ export class SectorPickerComponent implements OnInit {
       };
 
       this.service.createInvolvement(involvement)
-        .subscribe(inv => console.log('New involvement was saved', inv));
+        .subscribe(inv => {
+          console.log('New involvement was saved', inv);
+          this.notificationService.show('New involvement was saved');
+        });
     }
   }
 

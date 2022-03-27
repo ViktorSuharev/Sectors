@@ -1,4 +1,4 @@
-<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="sectors-tree">
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
     <span class="pr-5">{{ node.name }}</span>
     <ng-container *ngIf="node.id !== 0">
@@ -27,7 +27,7 @@
         </ng-container>
       </ng-container>
     </div>
-    <div [class.example-tree-invisible]="!treeControl.isExpanded(node)" role="group">
+    <div [class.sectors-tree-invisible]="!treeControl.isExpanded(node)" role="group">
       <ng-container matTreeNodeOutlet></ng-container>
     </div>
   </mat-nested-tree-node>
