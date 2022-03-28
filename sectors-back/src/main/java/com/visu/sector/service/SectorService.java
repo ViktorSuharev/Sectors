@@ -4,6 +4,7 @@ import com.visu.sector.model.Sector;
 import com.visu.sector.repository.SectorRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -16,6 +17,10 @@ public class SectorService {
 
     public Set<Sector> getSectors() {
         return repository.findByParentIdIsNull();
+    }
+
+    public Optional<Sector> getSectorById(Long id) {
+        return repository.findById(id);
     }
 
     public Sector saveSector(Sector sector) {

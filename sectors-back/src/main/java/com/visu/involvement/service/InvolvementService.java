@@ -4,6 +4,7 @@ import com.visu.involvement.model.Involvement;
 import com.visu.involvement.repository.InvolvementRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -16,6 +17,10 @@ public class InvolvementService {
 
     public Set<Involvement> getInvolvements() {
         return repository.findAllSet();
+    }
+
+    public Optional<Involvement> getInvolvementById(Long id) {
+        return repository.findById(id);
     }
 
     public Involvement getInvolvement(long involvementId) {

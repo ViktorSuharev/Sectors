@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SectorsHttpService } from '../../services/sectors.http.service';
 import {
   SectorNode,
   SectorTreeUpdateEvent,
   SectorTreeUpdateEventType, toSector,
-  toSectorNode
 } from '../sector-tree-group/sector-tree/sector-tree.component';
 import { PushNotificationService } from '../push-notification-group/services/push-notification.service';
 
@@ -13,15 +12,12 @@ import { PushNotificationService } from '../push-notification-group/services/pus
   templateUrl: './sector-editor.component.html'
 })
 export class SectorEditorComponent {
-  nodes: SectorNode[] = [];
+  @Input() nodes: SectorNode[] = [];
+  @Output() updated: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(
     private readonly service: SectorsHttpService,
     private readonly notificationService: PushNotificationService) { }
-
-  ngOnInit(): void {
-    this.reloadSectors();
-  }
 
   onUpdated(event: SectorTreeUpdateEvent): void {
     console.debug('New update event: %o', event);
@@ -51,18 +47,13 @@ export class SectorEditorComponent {
     }
   }
 
-  private reloadSectors(): void {
-    this.service.getSectors()
-      .subscribe(sectors => this.nodes = sectors.map(s => toSectorNode(s)));
-  }
-
   private add(node: SectorNode): void {
     const sector = toSector(node);
 
     this.service.add(sector).subscribe(s => {
       console.debug('Sector was added: %o', s);
       this.notificationService.show('Sector was added');
-      this.reloadSectors();
+      this.updated.emit();
     });
   }
 
@@ -72,17 +63,23 @@ export class SectorEditorComponent {
     this.service.edit(newSector).subscribe(s => {
       console.debug('Sector %o was updated to %o', toSector(oldNode), s);
       this.notificationService.show('Sector was updated');
-      this.reloadSectors();
+      this.updated.emit();
     });
   }
 
   private remove(node: SectorNode): void {
     const sector = toSector(node);
 
-    this.service.remove(sector.id).subscribe(() => {
-      console.debug('Sector was removed: %o', sector);
-      this.notificationService.show('Sector was removed');
-      this.reloadSectors();
+    this.service.remove(sector.id).subscribe({
+      next: () => {
+        console.debug('Sector was removed: %o', sector);
+        this.notificationService.show('Sector was removed');
+        this.updated.emit();
+      },
+      error: () => {
+        console.debug('Unable to remove sector: %o', sector);
+        this.notificationService.show('Unable to remove sector');
+      }
     });
   }
 }

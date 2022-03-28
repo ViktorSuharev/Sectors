@@ -12,4 +12,3 @@ public interface InvolvementRepository extends JpaRepository<Involvement, Long> 
     @Query("SELECT i FROM involvements i LEFT JOIN FETCH i.sectors")
     Set<Involvement> findAllSet();
 }
-

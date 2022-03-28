@@ -1,9 +1,9 @@
 <mat-tab-group class="common-wrapper">
   <mat-tab label="Picker">
-    <app-sector-picker></app-sector-picker>
+    <app-sector-picker [nodes]="nodes"></app-sector-picker>
   </mat-tab>
   <mat-tab label="Editor">
-    <app-sector-editor></app-sector-editor>
+    <app-sector-editor [nodes]="nodes" (updated)="onUpdated()"></app-sector-editor>
   </mat-tab>
 </mat-tab-group>
 

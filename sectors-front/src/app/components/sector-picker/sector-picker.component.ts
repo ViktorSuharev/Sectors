@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Sector } from '../../model/sector.model';
 import { SectorsHttpService } from '../../services/sectors.http.service';
@@ -6,8 +6,7 @@ import { Involvement } from '../../model/involvement.model';
 import { PushNotificationService } from '../push-notification-group/services/push-notification.service';
 import {
   SectorNode,
-  toSector,
-  toSectorNode
+  toSector
 } from '../sector-tree-group/sector-tree/sector-tree.component';
 
 @Component({
@@ -16,7 +15,6 @@ import {
   styleUrls: ['./sector-picker.component.less']
 })
 export class SectorPickerComponent implements OnInit {
-  nodes: SectorNode[] = [];
   selectedSectors: Sector[] = [];
   isSubmitted = false;
 
@@ -25,16 +23,15 @@ export class SectorPickerComponent implements OnInit {
     agreeToTerms: [false, Validators.requiredTrue],
   });
 
+  @Input() nodes: SectorNode[] = [];
+
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly service: SectorsHttpService,
     private readonly notificationService: PushNotificationService) { }
 
   ngOnInit(): void {
-    this.service.getSectors()
-      .subscribe(sectors => this.nodes = sectors.map(s => toSectorNode(s)));
-    this.service.getSessionInvolvement()
-      .subscribe(involvement => this.updateInvolvement(involvement));
+    this.loadSessionInvolvement();
   }
 
   saveForm(): void {
@@ -59,6 +56,11 @@ export class SectorPickerComponent implements OnInit {
     if (toolboxSectors) {
       this.selectedSectors = toolboxSectors.map(s => toSector(s));
     }
+  }
+
+  private loadSessionInvolvement(): void {
+    this.service.getSessionInvolvement()
+      .subscribe(involvement => this.updateInvolvement(involvement));
   }
 
   private updateInvolvement(involvement: Involvement): void {
